@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="row">
+    <div class="col-5 mx-auto">
+      <h3 class="bg-primary text-white p-3">{{ getName() }}'in Listesi</h3>
+      <div class="input-group mb-3">
+        <input
+          #txtItem
+          type="text"
+          name=""
+          id=""
+          class="form-control"
+          (keyup.enter)="addItem()"
+          [(ngModel)]="inputText"
+          
+        />
+        <button
+        [class]="getBtnClasses()"
+          class="btn"
+          (click)="addItem()"
+        >
+          Ekle
+        </button>
+      </div>
+
+      <div class="form-check mb-3">
+        <input
+          type="checkbox"
+          [(ngModel)]="displayAll"
+          name=""
+          id="displayAll"
+          class="form-check-input"
+        />
+        <label for="displayAll" class="form-check-label">Hepsini Goster</label>
+      </div>
+      <div class="my-2">{{ displayCount() }} gorev tamamlandi</div>
+      <div
+        class="alert alert-warning"
+        *ngIf="getItems().length == 0; else itemsTable"
+      >
+        Tum gorevler tamamlandi
+      </div>
+
+      <ng-template #itemsTable>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Aciklama</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of getItems(); let i = index" [class]="{'bg-primary' : item.action, 'bg-warning' : !item.action}">
+              <!-- burada veritabanindan gelen id olmasa bile let i = index diyerek 0'dan baslayan bir id tanimlamasi yapabiliyoruz -->
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.description }}</td>
+              <td>
+                <!-- If Blogu kontrol yapilari
+                    <div *ngIf="item.action else noTemplate">
+                      Yes
+                    </div>
+
+                  <ng-template #noTemplate>
+                      No
+                  </ng-template>
+
+                   <div *ngIf="item.action == true">Yapildi</div>
+                   <div *ngIf="item.action == false">Yapilacak
+                   </div> 
+
+                    <div [ngSwitch]="item.action">
+                        <div *ngSwitchCase="true">Yapildi</div>
+                        <div *ngSwitchDefault>Yapilacak</div>
+                    </div>
+                    -->
+
+                    <!-- if then blogu -->
+<!-- 
+                    <div *ngIf="item.action then noTemplate">
+                        Burasi Gosterilmez
+                      </div>
+  
+                    <ng-template #noTemplate>
+                        Yapildi
+                    </ng-template> -->
+
+                    <!-- if then else blogu -->
+
+                    <div *ngIf="item.action then noTemplate else yesTemplate">
+                        Burasi Gosterilmez
+                      </div>
+  
+                    <ng-template #noTemplate>
+                        Yapildi
+                    </ng-template>
+                    <ng-template #yesTemplate>
+                        Yapilacak
+                    </ng-template>
+               
+              </td>
+              <input type="checkbox" (change)="onActionChanged(item)" [(ngModel)]="item.action" name="" id="" />
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </div>
+  </div>
+</div>
